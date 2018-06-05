@@ -11,13 +11,18 @@ function change_permissions($file_path, $permission = '0644'){
 }
 
 
-function check_max_upload_size($path){
-        if(filesize($path) > 2000000){
-            return false;
-        } else{
-            return true;
-        }
-        
+function check_max_upload_size($size){
+    
+    
+    if($size > 2000000){
+        return false;
+    }elseif ($size == 0) {
+        return false;
+    }else{
+        return true;
+    }
+      
+
 }
 
 
@@ -25,14 +30,14 @@ function check_downloads_dir($path_to_dir){
 
     if(is_writable($path_to_dir)){
         return true;
-    }else{  
+    }else{
         return PERMISSION_DIR;
     }
 
 }
 
 function check_is_can_del($path){
-    
+
     if(is_writable($path)){
         return true;
     }else{
@@ -43,7 +48,7 @@ function check_is_can_del($path){
 
 
 function check_is_readable($path){
-    
+
         if (is_readable($path)){
             return true;
         }else{
@@ -99,25 +104,26 @@ function check_file_exist($path){
 
 
 function add_file($array){
-
+   
     if (true === check_downloads_dir(DOWNLOAD_DIR)) {
         if (true === check_file_exist(DOWNLOAD_DIR . "/" . $array['name'])) {
             $uploads_dir = DOWNLOAD_DIR;
             $name = $array['name'];
             $tmp_name = $array['tmp_name'];
-            if(check_max_upload_size($array['tmp_name'])){
-               
-            
+            //var_dump($array); die;
+            if(check_max_upload_size($array['size'])){
+
+
             if( move_uploaded_file($tmp_name, "$uploads_dir/$name")){
-                    change_permissions("$uploads_dir/$name", 0777); 
-                  return SUCCESS;  
+                    change_permissions("$uploads_dir/$name", 0777);
+                  return SUCCESS;
             }
 
             }else{
-                return MAX_DOWNLOAD_FILE;
-            }    
+                return MAX_UPLOAD_FILE;
+            }
            // change_permissions("$uploads_dir/$name", 0777);
-           
+
         } else {
             return check_file_exist(DOWNLOAD_DIR . "/" . $array['name']);
         }
@@ -128,8 +134,8 @@ function add_file($array){
 
 
 function delete_file($path){
-        if(true === check_is_can_del($path)){       
-                
+        if(true === check_is_can_del($path)){
+
                 if(unlink($path)){
                     return SUCCESS;
                 }
@@ -137,5 +143,3 @@ function delete_file($path){
                 return check_is_can_del($path);
         }
 }
-
-
