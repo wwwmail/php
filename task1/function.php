@@ -30,6 +30,8 @@ function check_is_can_del($path){
     }
 }
 
+
+
 function check_is_readable($path){
     
         if (is_readable($path)){
@@ -38,6 +40,7 @@ function check_is_readable($path){
             return READABLE_DIR;
         }
 }
+
 
 function get_files_list($dir){
 
@@ -66,8 +69,9 @@ function get_files_list($dir){
     }
 }
 
-function filesize_formatted($size)
-{
+
+function filesize_formatted($size){
+
     $units = array( 'B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
     $power = $size > 0 ? floor(log($size, 1024)) : 0;
     return number_format($size / pow(1024, $power), 2, '.', ',') . ' ' . $units[$power];
@@ -84,8 +88,8 @@ function check_file_exist($path){
 }
 
 
-function add_file($array)
-{
+function add_file($array){
+
     if (true === check_downloads_dir(DOWNLOAD_DIR)) {
         if (true === check_file_exist(DOWNLOAD_DIR . "/" . $array['name'])) {
             $uploads_dir = DOWNLOAD_DIR;
@@ -93,7 +97,7 @@ function add_file($array)
             $tmp_name = $array['tmp_name'];
             move_uploaded_file($tmp_name, "$uploads_dir/$name");
             change_permissions("$uploads_dir/$name", 0777);
-            return true;
+            return SUCCESS;
         } else {
             return check_file_exist(DOWNLOAD_DIR . "/" . $array['name']);
         }
@@ -102,11 +106,12 @@ function add_file($array)
     }
 }
 
+
 function delete_file($path){
         if(true === check_is_can_del($path)){       
                 
                 if(unlink($path)){
-                    return true;
+                    return SUCCESS;
                 }
         }else{
                 return check_is_can_del($path);

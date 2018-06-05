@@ -8,4 +8,4 @@ define('READABLE_DIR', 'Sorry, you don\'t have permission to display info from f
 define('FILE_EXIST','Sorry, but file already exist, choose another file!');
 //define('PATH_TO_SCRIPT', '/~user4/php/task1/index.php');
 define('PATH_TO_SCRIPT', '/php/task1/');
-define('SUCCES', 'Succes!');
+define('SUCCESS', 'Success!');
