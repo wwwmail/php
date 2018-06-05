@@ -11,6 +11,16 @@ function change_permissions($file_path, $permission = '0644'){
 }
 
 
+function check_max_upload_size($path){
+        if(filesize($path) > 2000000){
+            return false;
+        } else{
+            return true;
+        }
+        
+}
+
+
 function check_downloads_dir($path_to_dir){
 
     if(is_writable($path_to_dir)){
@@ -95,9 +105,19 @@ function add_file($array){
             $uploads_dir = DOWNLOAD_DIR;
             $name = $array['name'];
             $tmp_name = $array['tmp_name'];
-            move_uploaded_file($tmp_name, "$uploads_dir/$name");
-            change_permissions("$uploads_dir/$name", 0777);
-            return SUCCESS;
+            if(check_max_upload_size($array['tmp_name'])){
+               
+            
+            if( move_uploaded_file($tmp_name, "$uploads_dir/$name")){
+                    change_permissions("$uploads_dir/$name", 0777); 
+                  return SUCCESS;  
+            }
+
+            }else{
+                return MAX_DOWNLOAD_FILE;
+            }    
+           // change_permissions("$uploads_dir/$name", 0777);
+           
         } else {
             return check_file_exist(DOWNLOAD_DIR . "/" . $array['name']);
         }
