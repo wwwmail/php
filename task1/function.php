@@ -33,7 +33,7 @@ function check_downloads_dir($path_to_dir){
 
 function check_is_can_del($path){
     
-    if(is_writable($path)){
+    if(substr(sprintf('%o', fileperms($path)), -4) == 0777){
         return true;
     }else{
         return PERMISSION_FILE;
@@ -55,8 +55,9 @@ function check_is_readable($path){
 function get_files_list($dir){
 
     $return_array = [];
-
-    if (true === check_is_readable($dir)) {
+    
+      if (true === check_is_can_del($dir)) {
+            
         $directory = new DirectoryIterator($dir);
         $i = 0;
         foreach ($directory as $fileinfo) {
