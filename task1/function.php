@@ -27,8 +27,9 @@ function check_max_upload_size($size){
 
 
 function check_downloads_dir($path_to_dir){
+ 
+if(substr(sprintf('%o', fileperms($path_to_dir)), -4) == '0777'){
 
-    if(is_writable($path_to_dir)){
         return true;
     }else{
         return PERMISSION_DIR;
@@ -37,13 +38,10 @@ function check_downloads_dir($path_to_dir){
 }
 
 function check_is_can_del($path){
-<<<<<<< HEAD
-    
-    if(substr(sprintf('%o', fileperms($path)), -4) == 0777){
-=======
+
 
     if(is_writable($path)){
->>>>>>> ad7be53532173aad0575b6851f809cb0459494e0
+
         return true;
     }else{
         return PERMISSION_FILE;
@@ -66,7 +64,7 @@ function get_files_list($dir){
 
     $return_array = [];
     
-      if (true === check_is_can_del($dir)) {
+      if (true === check_downloads_dir($dir)) {
             
         $directory = new DirectoryIterator($dir);
         $i = 0;
@@ -86,7 +84,7 @@ function get_files_list($dir){
 
         return $return_array;
     }else {
-        return check_is_readable($dir);
+        return check_downloads_dir($dir);
     }
 }
 

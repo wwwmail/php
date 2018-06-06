@@ -17,6 +17,13 @@ if(isset($_POST['del_file']) && isset($_POST['file_name_for_del'])){
 
 $files = get_files_list(DOWNLOAD_DIR);
 
+if(!is_array($files)){
+        
+        $info = $files;
+        $files = array();
+}
+
+
 
 include ('template/index.php');
 
