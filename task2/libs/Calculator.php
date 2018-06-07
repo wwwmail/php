@@ -6,87 +6,37 @@ class Calculator
     private $a;
     private $b;
     
+   
 
-
-   /* public function __construct($a, $b, $operations)
+    public function setA($a)
     {
-        if($this->validate($a) && $this->validate($b)){
-                    
-        }
+       
+       $this->a = (int)$a; 
     
-    }*/
-
-    public setA($a)
-    {
-        if(is_int($a)){
-            return $this->a = (int)$a;
-        }else{
-            return false;
-        } 
     }
 
-    public setB($b)
+    public function setB($b)
     {
-        if(is_int($b)){
-            return $this->b = (int)$b;
-        }else{
-            return false;
-        } 
+       
+        $this->b = (int)$b;
+        
     }
 
-    public getA()
+    public function getA()
     {
        return $this->a;
     }
 
-    public getB()
+    public function getB()
     {
         return $this->b;
     }
 
 
-    public function calculate($operation, $a, $b = 0)
-    {
-            if($this->checkMethod($operation)){
-
-                    switch ($operation):
-                    case 'evolution':
-                            if($this->validate($a)){
-                                    return $operation . " " . $a . " = ". $this->$operation($a); 
-                            }else{
-                                return ERROR_INT;
-                            }
-                            break;
-                    case 'devision':
-                            if($this->validate($a) && $this->validate($b) && $b != 0){
-                                    return $a . " " . $operation . " " . $b . " = ". $this->$operation($a, $b); 
-                            }else{
-                                return ERROR_INT;
-                            }  
-                            break;
-                   default:
-                                   
-                   
-                            if($this->validate($a) && $this->validate($b)){
-                                    return $a ." ". $operation . " $b = " .  $this->$operation($a, $b);
-                            }else{
-                                return ERROR_INT;
-                            }
-                    endswitch;
-            }else{
-                    return ERROR_OPERATION;
-            }
-    }
-
-
-    function checkMethod($method)
-    {
-        return method_exists($this, $method);
-    }
 
     public function setMemory($number)
     {
-        return $this->memory = $number;
+        return $this->memory += $number;
     }
 
     public function getMemory()
@@ -94,49 +44,50 @@ class Calculator
         return $this->memory;
     }
     
-    private function validate($number)
+    public function resetMemory()
     {
-        if(is_int($number)){
-            return true;
-        }else{
-            return false;
-        }
+        $this->memory -= $this->memory;
     }
-    public function addition($a, $b)
+    public function addition()
     {
-       # if($this->validate
-        return $a + $b;
+       
+        return $this->a + $this->b;
     }
 
-    public function subtraction($a, $b)
+    public function subtraction()
     {
-        return $a - $b;
+        return $this->a - $this->b;
     }
 
-    public function multiplication($a, $b)
+    public function multiplication()
     {
-        return $a * $b;
+        return $this->a * $this->b;
     }
 
-    public function division($a, $b)
+    public function division()
     {
-        return $a / $b;
+            if($this->b != 0){
+                return $this->a / $this->b;
+            }else{
+                return ERROR_DIVISION;
+            }
+       
     }
     
-    public function involution($a, $b)
+    public function involution()
     {
-        return $a**$b;
+        return $this->a**$this->b;
     }
 
 
-    public function evolution($a)
+    public function evolution()
     {
-        return sqrt($a);
+        return sqrt($this->a);
     }
 
     public function memory($number)
     {
-       return    
+       return;    
     }
 
 

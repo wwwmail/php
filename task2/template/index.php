@@ -7,14 +7,17 @@
   <body>
 
 
-<table border=1>
-    <tr>
-        <th>N</th>
-        <th>File name</th>
-        <th>Size</th>
-        <th>Command</th>
-    </tr> 
+  <p><?php  echo $addition?></p>
+  <p><?php  echo $subtraction?></p>
+  <p><?php  echo $multiplication?></p>
+  <p><?php  echo $division?></p>
+  <p><?php  echo $involution?></p>
+  <p><?php  echo $evolution?></p>
+  <p><?php  echo $memory?></p>
+  <p><?php  echo $memory2?></p>
+  <p><?php  echo $reset?></p>
+
+
  </body>
 </html>
-
 
