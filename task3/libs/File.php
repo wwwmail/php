@@ -118,12 +118,39 @@ class File
         }
     }
     
-    public function saveChenges(string $filePath)
+    
+    public function printContent()
     {
-        $fp = fopen($filePath, 'w');
-        fwrite($fp, print_r($this->contentFile, TRUE));
-        fclose($fp);
+        foreach ($this->fileContent as $string){
+            for($i=0; $i < iconv_strlen($string); $i++){
+                echo $string[$i];
+            }
+        }        
     }
+    
+    
+    private function checkPermFolder(string $dirPath)
+    {
+         if(substr(sprintf('%o', fileperms($dirPath)), -4) == '0777'){
+
+                return true;
+        }else{
+                return PERMISSION_DIR;
+        }
+    }
+
+    public function saveChanges(string $dirPath, string $fileName)
+    {
+        if($this->checkPermFolder($dirPath)){
+            $fileString = implode("", $this->fileContent);
+            $fp = fopen($dirPath.'/'.$fileName, 'w+');
+            fwrite($fp, $fileString);
+            fclose($fp);
+            chmod($filePath, 0777);
+        }else{
+            return false;
+        }
+}
         
 
         

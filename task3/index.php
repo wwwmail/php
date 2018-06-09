@@ -29,9 +29,8 @@ $obj->replaceSymbol(2, 4, 's');
 
 $fileArray = $obj->getFileContent();
 
-var_dump($fileArray);
 
-$obj->printFile();
+$obj->saveChanges('/var/www/html/domains/test.test/php/task3/files/new5.txt');
 
 
 //$obj->saveChenges('/var/www/html/domains/test.test/php/task3/files','new.txt');
