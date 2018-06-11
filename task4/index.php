@@ -6,6 +6,8 @@ include ('libs/PostgreSql.php');
 
 $obj = new PostgreSql();
 
-$a = $obj->getConnect();
+//$a = $obj->getConnect();
 
-var_dump($a);
+$obj->select(['name', 'desk'], 'users');
+
+
