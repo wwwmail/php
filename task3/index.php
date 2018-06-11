@@ -2,36 +2,47 @@
 include ('config.php');
 include ('libs/File.php');
 
-
-//
-//$a = 'test';
-//if(isset($a[5]))
-//var_dump($a[5]);
-//die;
-
-
-
 $obj = new File();
 
-$obj->setFileContent('files/text.txt');
-
-
-$fileArray = $obj->getFileContent();
-
-echo "<pre>";
-
-
-//$string = $obj->getStringFromFile(5);
-$string = $obj->getSymbolFromFile(5, 3);
-
-$obj->replaceSymbol(2, 4, 's');
+$obj->setFileContent(PATH_TO_FILE.'/text.txt');
 
 
 $fileArray = $obj->getFileContent();
 
 
-$obj->saveChanges('/var/www/html/domains/test.test/php/task3/files/new5.txt');
 
+$numStr = 5;
+$numSymb = 3;
+$string = $obj->getStringFromFile($numStr);
+$symbol = $obj->getSymbolFromFile($numStr, $numSymb);
+
+
+
+$numStrRep = 5;
+$numSymbRep = 3;
+$repSymb = 'U';
+$beforeRep = $obj->getStringFromFile($numStrRep);
+$replace_symbol = $obj->replaceSymbol($numStrRep, $numSymbRep, $repSymb);
+$check_symbol = $obj-> getStringFromFile($numStrRep);
+
+
+
+
+$numStringRep = 5;
+$repString = 'some string for replace';
+$fileBeforRepStr = $obj->printFile();
+$resRepString = $obj->replaceString($numStringRep, $repString);
+$checkRepString = $obj->getStringFromFile($numStringRep);
+
+
+$fileArray = $obj->getFileContent();
+
+
+$save_file = $obj->saveChanges(PATH_TO_SAVE_FILES,'some_name22.txt');
+
+
+
+ 
 
 //$obj->saveChenges('/var/www/html/domains/test.test/php/task3/files','new.txt');
 

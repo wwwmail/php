@@ -5,7 +5,7 @@ class File
 
         private $fileContent;
 
-        public function setFileContent(string $filePath)
+        public function setFileContent($filePath)
         {
                 if(file_exists($filePath)){
                     $this->fileContent = file($filePath);
@@ -50,7 +50,7 @@ class File
             if($this->isExistString($numStr)){
                 return $this->fileContent[$numStr-1];
             } else {
-                return "error, string not found";
+                return STR_ERROR;
             }
             
         }
@@ -78,7 +78,7 @@ class File
                 $string = $this->getStringFromFile($numStr);
                 return $string[$numSym-1];
             }else{
-                return "symbol not exist";
+                return SYMBOL_ERROR;
             }
         }
         
@@ -89,18 +89,22 @@ class File
                 $this->fileContent[$numStr] = $str;
                 return true;
             }else{
-                return "string not found";
+                return STR_ERROR;
             }
         }
         
         public function replaceSymbol(int $numStr, int $numSym, string $symbol)
         {
-            if($this->isExistSymbol($numStr, $numSym)){
-                $this->fileContent[$numStr-1][$numSym-1] = $symbol;
-              
-                return true;
+                if($this->isExistSymbol($numStr, $numSym)){
+                        if(!empty($symbol)){
+                                $this->fileContent[$numStr-1][$numSym-1] =  $symbol;
+                                return $symbol;
+                        }else{
+                            return EMPTY_VALUE;         
+                        }
+               
             }else{
-                return "symbol not exist";   
+                return SYMBOL_ERROR;   
             }
         }
         
@@ -114,18 +118,20 @@ class File
             }
             return true;
         }else{
-            return 'file not found';
+            return FILE_ERROR;
         }
     }
     
     
     public function printContent()
     {
+       $file='';
         foreach ($this->fileContent as $string){
             for($i=0; $i < iconv_strlen($string); $i++){
-                echo $string[$i];
+                $file.= $string[$i];
             }
-        }        
+        }
+       return $file;       
     }
     
     
@@ -135,7 +141,7 @@ class File
 
                 return true;
         }else{
-                return PERMISSION_DIR;
+                return false;
         }
     }
 
@@ -146,11 +152,12 @@ class File
             $fp = fopen($dirPath.'/'.$fileName, 'w+');
             fwrite($fp, $fileString);
             fclose($fp);
-            chmod($filePath, 0777);
+            chmod("$dirPath/$fileName", 0777);
+            return SUCCESS_SAVE;
         }else{
-            return false;
+            return  PERMISSION_DIR;
         }
-}
+    }
         
 
         
