@@ -27,19 +27,19 @@ class MySql extends Sql
            }
   
     }
-    public function select()
+    public function select2()
     {
     }
 
-    public function insert()
+    public function insert2()
     {
     }
 
-    public function delete()
+    public function delete2()
     {
     }
 
-    public function update()
+    public function update2()
     {
     }
 }
