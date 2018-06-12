@@ -49,12 +49,6 @@ class Sql
 
 
 
-    public function setTable( string $table)
-    {
-        
-        $this->table = (string) $table;
-    }
-
     public function insert(array $insertData,  $table )
     {
     
@@ -79,7 +73,7 @@ class Sql
             $query = "INSERT INTO $table($fields) VALUES ($str)";
 
             
-        print $query;
+ //       print $query;
             $this->setQuery($query);
             $this->setInsertValue($insertValues);
         
@@ -98,34 +92,50 @@ class Sql
     }
 
 
-    public function where(array $keyValue)
+    public function where( $key, $val, $param = '=' )
     {
             $str = '';
-            $i = 0;
-            // $fields = implode(', ', array_keys($keyValue));
-            // $values = implode(', ', array_values($keyValue));     
-            if(is_array($keyValue)){
-                    foreach ($keyValue as $k=>$v){
-                            $i++;
-                            if($i == 0){
-
-                                    $str .= "WHERE $k=$v ";
-                            }else{
-                                    $str .=" AND WHERE $k=$v";
-                            }
-                    }
-            }
-        print $str;
-        $this->query .= $str; 
+         $str  = "WHERE $key$param$val "; 
+            $this->query .= $str; 
         return $this;
     }
 
-    public function delete()
+    public function andWhere( $key, $val, $param = '=' )
     {
+            $str = '';
+         $str  = "AND WHERE $key$param$val "; 
+       $this->query .= $str; 
+        return $this;
+    }
+
+    public function delete($fromTable)
+    {
+            
+            $str = "DELETE FROM $fromTable";
+            $this->query = $str;
     }
 
     public function update()
     {
+$sql = "UPDATE users SET name=?, surname=?, sex=? WHERE id=?";
+$stmt= $dpo->prepare($sql);
+$stmt->execute([$name, $surname, $sex]);
+or you can chain execute() to prepare():
+
+$sql = "UPDATE users SET name=?, surname=?, sex=? WHERE id=?";
+$dpo->prepare($sql)->execute([$name, $surname, $sex, $id]);
+UPDATE query with named placeholdreds
+In case you have a predefined array with values, or prefer named placeholders in general, the code would be
+
+$data = [
+    'name' => $name,
+    'surname' => $surname,
+    'sex' => $sex,
+    'id' => $id,
+];
+$sql = "UPDATE users SET name=:name, surname=:surname, sex=:sex WHERE id=:id";
+$stmt= $dpo->prepare($sql);
+$stmt->execute($data);
     }
 
 

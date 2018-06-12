@@ -35,6 +35,4 @@ $obj->insert(['tilte'     =>'Bob',
  */
 
 
-$obj->where(['tilte'     =>'Bob',
-              'firstname' =>'Lampard',
-              'email'     => 'bob@mail.com']);
+$obj->where('title','Bob', '=')->andWhere('id','10','<');
