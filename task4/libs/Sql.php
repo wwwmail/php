@@ -6,6 +6,54 @@ class Sql
     private $query;
     private $insertValue = [];   
     private $updateValue = [];
+   
+    private $host;
+    private $dbName;
+    private $userName;
+    private $pass;
+
+   
+   
+    public function setHost($host)
+    {
+        $this->host = $host;
+    }
+
+    public function getHost()
+    {
+        return $this->host;
+    }
+
+    public function setDb($dbName)
+    {
+        $this->dbName = $dbName;
+    }
+
+    public function getDb()
+    {
+        return $this->dbName;
+    }
+
+    public function setUser($user)
+    {
+        $this->userName = $user;
+    }
+    
+    public function getUser()
+    {
+        return $this->userName;
+    }
+
+    public function setPass($pass)
+    {
+        $this->pass = $pass;
+    }
+
+    public function getPass()
+    {
+        return $this->pass;
+    }
+
 
     public function setQuery($query)
     {
@@ -65,14 +113,11 @@ class Sql
     public function insert(array $insertData,  $table )
     {
 
-
         $insertFields = array_keys($insertData);
-
 
         $insertValues = array_values($insertData);
 
         $fields = implode(', ', $insertFields);
-
 
         $i = 0;
 
@@ -89,8 +134,6 @@ class Sql
 
         $query = "INSERT INTO $table($fields) VALUES ($str)";
 
-
-
         $this->setQuery($query);
         $this->setInsertValue($insertValues);
 
@@ -102,7 +145,6 @@ class Sql
 
     public function where( $key, $val, $param = '=' )
     {
-   
         $str  = " WHERE $key $param $val "; 
         $this->query .= $str; 
         return $this;
@@ -121,14 +163,13 @@ class Sql
 
         $str = "DELETE FROM $fromTable";
         $this->query = $str;
+        return $this;
     }
 
     public function update( array $updateData, $table)
     {
 
-
         $updateFields = array_keys($updateData);
-
 
         $updateValues = array_values($updateData);
 
@@ -136,7 +177,6 @@ class Sql
 
         $i = 0;
  
-
         $str = "UPDATE $table SET ";
         while (count($updateFields) > $i) {
 

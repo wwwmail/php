@@ -2,17 +2,12 @@
 
 class MySql extends Sql
 {   
-    private $host;
-    private $dbName;
-    private $userName;
-    private $pass;
-
 
 
     public function getConnect()
     {       
         try {
-            $dbh = new PDO('mysql:host=localhost;dbname=user4', 'user4', 'user4');
+            $dbh = new PDO('mysql:host='.$this->host.';dbname=user4', 'user4', 'user4');
             return $dbh;
         } catch (PDOException $e) {
             print "Error!: " . $e->getMessage() . "<br/>";
@@ -20,8 +15,7 @@ class MySql extends Sql
         }
 
     }
-
-
+    
     public function execInsert()
     {
         $dbh = $this->getConnect();
@@ -68,11 +62,8 @@ class MySql extends Sql
     {
         $dbh = $this->getConnect(); 
 
-        //var_dump($dbh); die;
         $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-
-        //    echo $this->getQuery(); die;
         $sth = $dbh->prepare($this->getQuery());
 
         if(count($this->getUpdateValue())>0){
@@ -90,26 +81,27 @@ class MySql extends Sql
 
         } 
 
-          /*  $sql = "UPDATE users SET name=?, surname=?, sex=? WHERE id=?";
-
-            $stmt= $dpo->prepare($sql);
-            $stmt->execute([$name, $surname, $sex]);
-           */
     }
 
 
-    public function insert2()
+    public function execDelete()
     {
+      
+        $dbh = $this->getConnect();
+
+        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+
+       // print($this->getQuery());
+        $sth = $dbh->prepare($this->getQuery()); 
+
+        if( $sth->execute()){
+            return  $sth->execute(); 
+        }else{
+            return false;
+        } 
+       
     }
 
-    public function delete2()
-    {
-    }
 
-    public function update2()
-    {
-    }
-    public function __destruct() {
-
-    }
 }
