@@ -10,7 +10,7 @@ $obj->setFileContent(PATH_TO_FILE.'/text.txt');
 $fileArray = $obj->getFileContent();
 
 
-
+$printFileBefore = $obj->printContent();
 $numStr = 5;
 $numSymb = 3;
 $string = $obj->getStringFromFile($numStr);
@@ -30,13 +30,15 @@ $check_symbol = $obj-> getStringFromFile($numStrRep);
 
 $numStringRep = 5;
 $repString = 'some string for replace';
-$fileBeforRepStr = $obj->printFile();
+//$fileBeforRepStr = $obj->printFile();
 $resRepString = $obj->replaceString($numStringRep, $repString);
 $checkRepString = $obj->getStringFromFile($numStringRep);
 
 
 $fileArray = $obj->getFileContent();
 
+
+$printFileAfter = $obj->printContent();
 
 $save_file = $obj->saveChanges(PATH_TO_SAVE_FILES,'some_name22.txt');
 

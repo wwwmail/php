@@ -29,6 +29,13 @@
 
 
 <p>Save file after chenges <?php echo $save_file?></p>
- 
+
+
+<h3>File Before Chenges</h3>
+<pre><?php echo $printFileBefore?></pre>
+
+
+<h3>File Aftrer Chenges</h3>
+<pre><?php echo $printFileAfter?></pre>
 </body>
 </html>

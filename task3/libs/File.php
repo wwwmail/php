@@ -110,13 +110,14 @@ class File
         
     public function printFile(string $filePath)
     {
+        $str = '';
         if(file_exists($filePath)){
             foreach ($this->fileContent as $string){
                 for($i=0; $i < iconv_strlen($string); $i++){
-                    echo $string[$i];
+                   $str .= $string[$i];
                 }
             }
-            return true;
+            return $str;
         }else{
             return FILE_ERROR;
         }
