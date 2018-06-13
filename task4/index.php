@@ -1,60 +1,15 @@
 <?php
+include ('config.php');
+include ('libs/SqlException.php');
 include ('libs/Sql.php');
 include ('libs/MySql.php');
 include ('libs/PostgreSql.php');
 
-/*
-
-$obj = new MYSql();
-
-$obj->setHost('localhost');
-$obj->setDb('user4');
-$obj->setUser('user4');
-$obj->setPass('user4');
-*/
 
 
-/*
-$c = $obj->insert(['firstname'=>'Ivan','email'=>'qq@mail.cz','lastname'=>'Yasinskiy'],'my_table')->end();
- */
 
-/*
- *
- *
-$d  = $obj->update(['firstname'=>'Lamps','email'=>'qq@mail.cz','lastname'=>'Yasinskiy'],'my_table')
-        ->where('id', '5', '<')
-        ->andWhere('id','3','>')
-        ->execUpdate();
- */
+try{
 
-/*
-$g = $obj->delete('my_table')->where('id', '3', '=')->execDelete();
-var_dump($g);
-*/
-/*
-$b = $obj->select(['firstname', 'email'], 'my_table')
-        //->limit(2)
-        ->end();
-
-
-var_dump($b);
- */
-/*
-$obj->insert(['tilte'     =>'Bob',
-              'firstname' =>'Lampard',
-              'email'     => 'bob@mail.com'], 'some_table');
-
-
- */
-
-/*
-        $obj->where('title','Bob', '=')->andWhere('id','10','<');
- */
-/*
-$obj->update(['tilte'     =>'Bob',
-              'firstname' =>'Lampard',
-              'email'     => 'bob@mail.com'], 'some_table');
-*/
 
 $obj2 = new PostgreSql();
 
@@ -63,15 +18,54 @@ $obj2->setDb('user1');
 $obj2->setUser('user1');
 $obj2->setPass('user1');
 
+$a = '';
+
+$d = $obj2->update(['userdata'=>date('s')],'pg_test')
+          ->where('userid', '=', 'user4')
+          ->execUpdate();
+$array2 = $obj2->select(['userid','userdata'])
+              ->from( 'PG_TEST')
+              ->where('userid', '=', 'user4')
+              ->limit(2)
+              ->execSelect();
 
 
 
-$c = $obj2->insert(['userid'=>'user4','userdata'=>'new data22'],'pg_test')->execInsert();
-
-$array = $obj2->select(['userid','userdata'])->where('userid','user4', '=')->limit(2);
-
-var_dump($c);
+//$c = $obj2->insert( ['userid'=>'user4','userdata'=>'new data22'], 'pg_test')->execInsert();
 
 
-include ('temlate/index.php');
+$obj3 = new MySql();
+
+$obj3->setHost('localhost');
+$obj3->setDb('user1');
+$obj3->setUser('user1');
+$obj3->setPass('user1');
+
+
+$c3 = $obj3->insert( ['userid'=>'user4','userdata'=>'dev dev'], 'MY_TEST')->execInsert();
+
+/*
+$obj3->delete()
+    ->from('MY_TEST')
+    ->where('userid','=', 'user4')
+    ->limit(1)
+    ->execDelete();
+ */
+$array3 = $obj3->select(['userid','userdata'])
+              ->from( 'MY_TEST')
+              ->where('userid', '=', 'user4')
+//              ->limit(2)
+              ->execSelect();
+
+
+
+//$c = $obj2->insert( ['userid'=>'user4','userdata'=>date('m')], 'pg_test')->execInsert();
+
+include ('template/index.php');
+
+
+} catch(SqlException $e){
+
+echo $e->getMessage();
+}
 

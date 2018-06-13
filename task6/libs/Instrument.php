@@ -16,7 +16,8 @@ class Instrument implements iInstrument
 
     public function getName()
     {
-        return $this->name;
+        return implode (', ', $this->name);
+       // return $this->name;
     }
      
     public function setCategory($category)

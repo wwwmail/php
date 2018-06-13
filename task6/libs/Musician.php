@@ -15,7 +15,8 @@ class Musician implements iMusician
     
     public function getInstrument()
     {
-        return $this->instruments;
+        return implode (', ', $this->instruments);
+       // return $this->instruments;
     }
     
     public function assingToBand(iBand $nameBand)
