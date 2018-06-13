@@ -24,9 +24,9 @@ $objM = new MySql();
 
 $a = $objM->saveData('first_key','first value for key');
 
-
+$b = $objM->getData('first_key');
 
 
 echo '<pre>';
-
+var_dump($b);
 var_dump($a);
