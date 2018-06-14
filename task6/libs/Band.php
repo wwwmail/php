@@ -24,8 +24,7 @@ class Band implements iBand
 
     public function getGenre()
     {
-        return implode (', ', $this->musicants);
-       // return $this->genre;
+        return implode (', ', $this->genre); 
     }
     
     
@@ -36,6 +35,27 @@ class Band implements iBand
     
     public function getMusician()
     {
-       return implode (', ', $this->musicants);
+        $str = '';
+        foreach ($this->musicants as $item){
+
+            $str .= $item->getMusicianType();
+            $str .= ', ';
+
+        }
+        return substr($str, 0, -1);
+    }
+
+
+    public function getInstruments()
+    {
+
+        $str = '';
+        
+        foreach ($this->musicants as $item){
+            $str .= $item->getInstrument();
+
+            $str .= ', ';
+        }
+        return substr($str, 0, -2); 
     }
 }

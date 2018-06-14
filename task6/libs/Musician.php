@@ -15,8 +15,18 @@ class Musician implements iMusician
     
     public function getInstrument()
     {
-        return implode (', ', $this->instruments);
-       // return $this->instruments;
+
+
+        $str = '';
+        foreach ($this->instruments as $val){
+        
+            $str .= $val->getName();
+            $str.=',';
+        }
+        return substr($str, 0, -1);
+
+ 
+//      return $this->instruments;
     }
     
     public function assingToBand(iBand $nameBand)
