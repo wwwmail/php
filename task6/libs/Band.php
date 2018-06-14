@@ -5,7 +5,7 @@ class Band implements iBand
     private $name;
     private $genre;
     private $musicants;
-    
+
     public function setName($name)
     {
         $this->name = $name;
@@ -15,24 +15,24 @@ class Band implements iBand
     {
         return $this->name;
     }
-    
+
     public function setGenre($genre)
     {
         $this->genre[] = $genre;
     }
-    
+
 
     public function getGenre()
     {
         return implode (', ', $this->genre); 
     }
-    
-    
+
+
     public function addMusician(iMusician $obj)
     {
         $this->musicants[]= $obj;
     }
-    
+
     public function getMusician()
     {
         $str = '';
@@ -50,12 +50,16 @@ class Band implements iBand
     {
 
         $str = '';
-        
-        foreach ($this->musicants as $item){
-            $str .= $item->getInstrument();
+        $arr = array();
 
-            $str .= ', ';
-        }
-        return substr($str, 0, -2); 
+        foreach ($this->musicants as $item){
+            $arr[] = explode(', ' ,$item->getInstrument());
+        }    
+        $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($arr));
+        $arrIterator = iterator_to_array($iterator, false);
+
+        $arrIterator = array_unique($arrIterator); 
+
+        return implode(', ', $arrIterator); 
     }
 }

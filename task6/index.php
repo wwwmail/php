@@ -1,5 +1,5 @@
 <?php
-include ('libs/config.php');
+include ('config.php');
 include ('libs/iBand.php');
 include ('libs/iInstrument.php');
 include ('libs/iMusician.php');
@@ -75,15 +75,15 @@ $band3->addMusician($mus3);
 
 
 
-//var_dump($band->getMusician()); die;
 
-echo $band3->getName();
-echo '<br>';
 
-echo $band3->getGenre();
-echo '<br>';
-echo $band3->getMusician();
-echo '<br>';
-echo $band3->getInstruments();
+$name = $band3->getName();
+
+
+$genre = $band3->getGenre();
+
+$musician =  $band3->getMusician();
+
+$instruments =  $band3->getInstruments();
 
 include('template/index.php');
