@@ -2,15 +2,18 @@
 
 class MySql implements iWorkData
 {
+    const HOST = "localhost";
+    const DB_NAME = "user4";
+    const DB_USER = "user4";
+    const DB_PASS = "user4";
 
-    private $dbh;
-
+    
     private function getConnect()
     {
 
 
         try {
-            return new PDO("mysql:host=localhost;dbname=user4", 'user4', 'user4' );
+            return new PDO("mysql:host=".self::HOST.";dbname=".self::DB_NAME,  self::DB_USER, self::DB_PASS );
 
         } catch (PDOException $e) {
             print "Error!: you dont have access to DataBase";
@@ -43,13 +46,19 @@ class MySql implements iWorkData
 
     public function getData($key)
     {
-        $db = $this->getConnect();
+        if($this->checkKey($key)){
+            $db = $this->getConnect();
 
-        $sql = "SELECT value_name FROM key_value WHERE key_name=:key";
+            $sql = "SELECT value_name FROM key_value WHERE key_name=:key";
 
-        $result = $db->prepare($sql);
-        if( $result->execute(['key' => $key])){
-            return $result->fetch(\PDO::FETCH_ASSOC);
+            $result = $db->prepare($sql);
+            if( $result->execute(['key' => $key])){
+                $data = $result->fetch(\PDO::FETCH_ASSOC);
+
+                return $data['value_name'];
+            }else{
+                return NOT_EXIST;
+            }
         }else{
             return NOT_EXIST;
         }
@@ -57,7 +66,7 @@ class MySql implements iWorkData
     }
     public function deleteData($key)
     {
-        if($this->chekKey($key)){
+        if($this->checkKey($key)){
 
             $db = $this->getConnect();
 
@@ -65,7 +74,7 @@ class MySql implements iWorkData
 
             $result = $db->prepare($sql);
 
-            $result = bindParam(':key_name', $key, PDO::PARAM_STR);
+            $result->bindParam(':key', $key, PDO::PARAM_STR);
             return $result->execute();
         }else{
             return NOT_EXIST;

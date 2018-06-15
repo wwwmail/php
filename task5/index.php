@@ -3,18 +3,18 @@ include ('config.php');
 include ('libs/iWorkData.php');
 include ('libs/Cookies.php');
 include ('libs/MySql.php');
+include ('libs/Session.php');
 
 
 
-
-//$objC = new Cookies();
+$objC = new Cookies();
 
 
 
 //$objC->saveData('key', '123429');
 
 
-//echo $objC->getData('key');
+$cookie = $objC->getData('key');
 
 //$objC->deleteData('key');
 
@@ -22,11 +22,16 @@ include ('libs/MySql.php');
 
 $objM = new MySql();
 
-$a = $objM->saveData('first_key1','first value for key');
+$objM->saveData('first_key2','first value for key11');
 
-$b = $objM->getData('first_key');
+$mysql = $objM->getData('first_key2');
+//$objM->deleteData('first_key2');
 
+$objS = new Session();
 
-echo '<pre>';
-var_dump($b);
-var_dump($a);
+//$objS->saveData('key1', 'ZzQQi');
+
+$session = $objS->getData('key1');
+// $objS->deleteData('key1');
+
+include('template/index.php');
