@@ -7,7 +7,7 @@ class MySql implements iWorkData
     const DB_USER = "user4";
     const DB_PASS = "user4";
 
-    
+
     private function getConnect()
     {
 
@@ -25,6 +25,11 @@ class MySql implements iWorkData
     } 
     public function saveData($key, $val)
     {
+        if(empty($key) || empty($val)){
+
+            throw new WorkDataException(EMPTY_KEY_VAL);
+        }
+
         $db = $this->getConnect();
 
         if(!$this->checkKey($key)){
@@ -46,6 +51,11 @@ class MySql implements iWorkData
 
     public function getData($key)
     {
+        if(empty($key) ){
+
+            throw new WorkDataException(EMPTY_KEY_VAL);
+        }
+
         if($this->checkKey($key)){
             $db = $this->getConnect();
 
@@ -65,7 +75,11 @@ class MySql implements iWorkData
 
     }
     public function deleteData($key)
-    {
+    { 
+        if(empty($key) ){
+
+            throw new WorkDataException(EMPTY_KEY_VAL);
+        }
         if($this->checkKey($key)){
 
             $db = $this->getConnect();
@@ -84,6 +98,10 @@ class MySql implements iWorkData
 
     private function checkKey($key)
     {
+        if(empty($key) ){
+
+            throw new WorkDataException(EMPTY_KEY_VAL);
+        }
         $db = $this->getConnect();
         $stmt = $db->prepare('SELECT * FROM key_value WHERE key_name=?');
         $stmt->bindParam(1, $key, PDO::PARAM_STR);

@@ -29,7 +29,7 @@ class Session implements iWorkData
     {
         if(isset($_SESSION[$key])){
 
-             unset($_SESSION[$key]);     
+            unset($_SESSION[$key]);     
             return true;
         }else{
             return NOT_EXIST;
