@@ -6,6 +6,7 @@ class ContactForm extends Post
     private $name;
     private $email;
     private $subject;
+    private $message;
     private $ipAddres;
     private $clietTime;
     
@@ -23,28 +24,62 @@ class ContactForm extends Post
     }
 
 
-    public function setProperties()
+    public function validateMessage($message)
     {
-        
+        if(strlen($message)< 5){
+            return 'Message must consist from 2 letter';
+        }else{
+            return true;
+        }
+    }
+    
+    public function validateSubject($subject)
+    {
+        if(empty($subject)){
+            return 'subject must be not empty';
+        }else{
+            return true;
+        }
+    }
+    
+    
+    public function validateEmail()
+    {
+        if (filter_var($email_a, FILTER_VALIDATE_EMAIL)) {
+            return true;
+        } else {
+            return "wrong email";
+        }
     }
 
-    public function validateName($name)
-    {
-        if($this->checkData) 
-    }
     public function setProperties(array $array)
     {
-            $this->setArrayOfData($array);
-            
-            return [
-            'name' => getArrayOfData
-            
-            
-            ]
-            $this->getArrayOfData();
+        $this->setArrayOfData($array);
+        
+        $this->name = $this->getArrayOfData()['name'];
+        $this->email = $this->getArrayOfData()['email'];
+        
+        $this->subject = $this->getArrayOfData()['subject'];
+        $this->ipAddres = $this->getArrayOfData()['ipAddres'];
+        $this->clietTime = $this->getArrayOfData()['clietTime'];
+        $this->message = $this->getArrayOfData()['message'];
 
-                   
+          
     }
+    
+    
+    public function validateForm(array $post)
+    {
+        $this->setProperties($post);
+        
+        
+        if()
+        
+        
+    }
+    
+    
+    
 
 
 
