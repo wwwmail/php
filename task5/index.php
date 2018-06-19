@@ -1,20 +1,22 @@
 <?php
 include ('config.php');
+include ('libs/WorkDataException.php');
 include ('libs/iWorkData.php');
 include ('libs/Cookies.php');
 include ('libs/MySql.php');
+include ('libs/Session.php');
 
 
+try{
 
-
-//$objC = new Cookies();
+$objC = new Cookies();
 
 
 
 //$objC->saveData('key', '123429');
 
 
-//echo $objC->getData('key');
+$cookie = $objC->getData('key');
 
 //$objC->deleteData('key');
 
@@ -22,11 +24,22 @@ include ('libs/MySql.php');
 
 $objM = new MySql();
 
-$a = $objM->saveData('first_key','first value for key');
+$b = $objM->saveData('11','ee');
 
-$b = $objM->getData('first_key');
+$mysql = $objM->getData('first_key2');
+//$objM->deleteData('first_key2');
 
+$objS = new Session();
 
-echo '<pre>';
-var_dump($b);
-var_dump($a);
+//$objS->saveData('key1', 'ZzQQi');
+
+$session = $objS->getData('key1');
+// $objS->deleteData('key1');
+
+include('template/index.php');
+
+} catch(WorkDataException $e){
+
+echo $e->getMessage();
+}
+

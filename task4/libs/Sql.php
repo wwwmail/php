@@ -66,7 +66,7 @@ class Sql
     }
 
     public function setInsertValue(array $insVal)
-    {
+    {      
         $this->insertValue = (array)$insVal;  
     }
 
@@ -87,21 +87,39 @@ class Sql
         return $this->updateValue;
     }
 
-    public function select(array $selectFields, $table )
+    public function select(array $selectFields)
     {
 
+      if(empty($selectFields)){
+            throw new SqlException(EMPTY_SELECT);
+       }
         $fields = implode(', ', $selectFields);
 
-        $query = "SELECT $fields FROM $table";
+        $query = "SELECT $fields ";
 
         $this->setQuery($query);
 
         return $this;    
     }
 
+    public function from($from)
+    {
+
+      if(empty($from)){
+            throw new SqlException(EMPTY_FROM);
+       }
+        $from = " FROM $from";
+        $this->query .= $from;
+        return $this;
+    }
+
 
     public function limit($limit)
     {
+
+      if(empty($limit)){
+            throw new SqlException(EMPTY_LIMIT);
+       }
         $limit = (int) $limit;
         $limit = " LIMIT $limit";
         $this->query .= $limit;  
@@ -116,6 +134,10 @@ class Sql
         $insertFields = array_keys($insertData);
 
         $insertValues = array_values($insertData);
+        
+        if(empty($insertFields) || empty($insertValues)){
+            throw new SqlException(EMPTY_INSERT);
+        }
 
         $fields = implode(', ', $insertFields);
 
@@ -143,25 +165,33 @@ class Sql
     }
 
 
-    public function where( $key, $val, $param = '=' )
+    public function where( $key, $param, $val )
     {
-        $str  = " WHERE $key $param $val "; 
-        $this->query .= $str; 
+        if(empty($key) || empty($param) || empty($val)){
+            throw new SqlException(EMPTY_WHERE);
+        }
+     
+        $str  = " WHERE $key $param '$val' "; 
+        $this->query .= $str;   
         return $this;
     }
 
-    public function andWhere( $key, $val, $param = '=' )
+    public function andWhere( $key, $param, $val )
     {
+
+        if(empty($key) || empty($param) || empty($val)){
+            throw new SqlException(EMPTY_WHERE);
+        }
   
-        $str  = " AND $key $param $val "; 
+        $str  = " AND $key $param '$val' "; 
         $this->query .= $str; 
         return $this;
     }
 
-    public function delete($fromTable)
+    public function delete()
     {
 
-        $str = "DELETE FROM $fromTable";
+        $str = "DELETE ";// FROM $fromTable";
         $this->query = $str;
         return $this;
     }
@@ -172,6 +202,10 @@ class Sql
         $updateFields = array_keys($updateData);
 
         $updateValues = array_values($updateData);
+
+        if(empty($updateFields) || empty($updateValues)){
+            throw new SqlException(EMPTY_UPDATE);
+        }
 
         $fields = implode(', ', $updateFields);
 
@@ -193,6 +227,90 @@ class Sql
         $this->query = $str;
         return $this;
     }
+    
+
+    public function execInsert()
+    {
+        $dbh = $this->getConnect();
+
+        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $sth = $dbh->prepare($this->getQuery());
+
+        if(count($this->getInsertValue())>0){
+
+            if($sth->execute($this->getInsertValue())){
+
+                return true;
+
+            }else{
+                return false;
+            }
+
+        }else{
+            return false;
+
+        } 
+
+    }
+
+    public function execSelect()
+    {
+
+        $dbh = $this->getConnect();
+
+        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $sth = $dbh->prepare($this->getQuery()); 
+
+        if( $sth->execute()){
+            return  $sth->fetchAll(\PDO::FETCH_ASSOC); 
+        }else{
+            return false;
+        } 
+    }
 
 
+    public function execUpdate()
+    {
+        $dbh = $this->getConnect(); 
+
+        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $sth = $dbh->prepare($this->getQuery());
+
+        if(count($this->getUpdateValue())>0){
+
+            if($sth->execute($this->getUpdateValue())){
+
+                return true;
+
+            }else{
+                return false;
+            }
+
+        }else{
+            return false;
+
+        } 
+
+    }
+
+
+    public function execDelete()
+    {
+      
+        $dbh = $this->getConnect();
+
+        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+       
+        $sth = $dbh->prepare($this->getQuery()); 
+
+        if( $sth->execute()){
+            return  $sth->execute(); 
+        }else{
+            return false;
+        } 
+       
+    }
 }
