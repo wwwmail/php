@@ -26,7 +26,7 @@ $objM = new MySql();
 
 $b = $objM->saveData('11','ee');
 
-$mysql = $objM->getData('first_key2');
+$mysql = $objM->getData('11');
 //$objM->deleteData('first_key2');
 
 $objS = new Session();

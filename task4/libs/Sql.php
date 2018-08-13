@@ -12,7 +12,7 @@ class Sql
     private $userName;
     private $pass;
 
-   
+
    
     public function setHost($host)
     {
@@ -232,7 +232,6 @@ class Sql
     public function execInsert()
     {
         $dbh = $this->getConnect();
-
         $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $sth = $dbh->prepare($this->getQuery());
