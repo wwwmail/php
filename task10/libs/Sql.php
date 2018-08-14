@@ -188,6 +188,41 @@ class Sql
         return $this;
     }
 
+
+
+    public function join($table, $condition1, $condition2)
+    {
+        $this->query .= " INNER JOIN ".$table." ON $condition1 = $condition2 ";
+        return $this;
+    }
+
+    public function leftJoin($table, $condition1, $condition2)
+    {
+        $this->query .= " LEFT OUTER JOIN $table ON $condition1 = $condition2 ";
+        return $this;
+    }
+
+    public function rightJoin($table, $condition1, $condition2)
+    {
+        $this->query .= " RIGHT OUTER JOIN $table ON $condition1 = $condition2 ";
+        return $this;
+    }
+
+
+    public function crossJoin($table, $condition1, $condition2)
+    {
+        $this->query .= " CROSS JOIN $table ON $condition1 = $condition2 ";
+        return $this;
+    }
+
+    
+    public function naturalJoin($table, $condition1, $condition2)
+    {
+        $this->query .= " NATURAL JOIN $table ON $condition1 = $condition2 ";
+        return $this;
+    }
+
+
     public function delete()
     {
 
