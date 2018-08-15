@@ -11,6 +11,7 @@ class Sql
     private $dbName;
     private $userName;
     private $pass;
+    
 
    
    
@@ -101,6 +102,12 @@ class Sql
 
         return $this;    
     }
+    
+    public function distinct()
+    {
+        $this->query = str_replace('SELECT', 'SELECT DISTINCT ', $this->query);
+        return $this;
+    }
 
     public function from($from)
     {
@@ -121,10 +128,55 @@ class Sql
             throw new SqlException(EMPTY_LIMIT);
        }
         $limit = (int) $limit;
-        $limit = " LIMIT $limit";
+        $limit = " LIMIT $limit ";
         $this->query .= $limit;  
         return $this;
     }
+    
+    public function group($param)
+    {
+        if(empty($param)){
+            throw new SqlException(EMPTY_GROUP);
+        }
+        
+        $this->query.=" GROUP BY $param ";
+        return $this;
+    }
+    
+    public function having($condition)
+    {
+        if(empty($condition)){
+            throw new SqlException(EMPTY_HAVING);
+        }
+        
+        $this->query.=" HAVING $condition ";
+        return $this;
+    }
+    
+    public function orderBy($array, $condition)
+    {
+        if(empty($array)){
+            throw new SqlException(EMPTY_ORDER);
+        }elseif (empty ($condition)) {
+             throw new SqlException(EMPTY_ORDER_CONDITION);   
+        }
+        
+        $condition = strtoupper ($condition);
+        
+        if($condition != 'ASC' || $condition !='DESC'){
+            $condition = 'ASC';
+        }
+        
+        if(is_array($array)){
+            $arrayToString = implode(",", $array);
+        } else {
+            $arrayToString = $array;
+        }
+        $this->query.= " ORDER BY $arrayToString $condition";
+        return $this;
+    }
+    
+    
 
 
 
@@ -192,18 +244,42 @@ class Sql
 
     public function join($table, $condition1, $condition2)
     {
+        if(empty($table)){
+            throw new SqlException(EMPTY_JOIN_TABLE);
+        }
+         
+        if(empty($condition1) || empty($condition2)){
+             throw new SqlException(EMPTY_JOIN_CONDITION);
+        }
+         
         $this->query .= " INNER JOIN ".$table." ON $condition1 = $condition2 ";
         return $this;
     }
 
     public function leftJoin($table, $condition1, $condition2)
     {
+        if(empty($table)){
+            throw new SqlException(EMPTY_JOIN_TABLE);
+        }
+         
+        if(empty($condition1) || empty($condition2)){
+             throw new SqlException(EMPTY_JOIN_CONDITION);
+        }
+        
         $this->query .= " LEFT OUTER JOIN $table ON $condition1 = $condition2 ";
         return $this;
     }
 
     public function rightJoin($table, $condition1, $condition2)
     {
+        if(empty($table)){
+            throw new SqlException(EMPTY_JOIN_TABLE);
+        }
+         
+        if(empty($condition1) || empty($condition2)){
+             throw new SqlException(EMPTY_JOIN_CONDITION);
+        }
+        
         $this->query .= " RIGHT OUTER JOIN $table ON $condition1 = $condition2 ";
         return $this;
     }
@@ -211,6 +287,14 @@ class Sql
 
     public function crossJoin($table, $condition1, $condition2)
     {
+        if(empty($table)){
+            throw new SqlException(EMPTY_JOIN_TABLE);
+        }
+         
+        if(empty($condition1) || empty($condition2)){
+             throw new SqlException(EMPTY_JOIN_CONDITION);
+        }
+        
         $this->query .= " CROSS JOIN $table ON $condition1 = $condition2 ";
         return $this;
     }
@@ -218,6 +302,14 @@ class Sql
     
     public function naturalJoin($table, $condition1, $condition2)
     {
+        if(empty($table)){
+            throw new SqlException(EMPTY_JOIN_TABLE);
+        }
+         
+        if(empty($condition1) || empty($condition2)){
+             throw new SqlException(EMPTY_JOIN_CONDITION);
+        }
+        
         $this->query .= " NATURAL JOIN $table ON $condition1 = $condition2 ";
         return $this;
     }
@@ -295,7 +387,7 @@ class Sql
         $dbh = $this->getConnect();
 
         $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+        //echo $this->getQuery(); die;
         $sth = $dbh->prepare($this->getQuery()); 
 
         if( $sth->execute()){
